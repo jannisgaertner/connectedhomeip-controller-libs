@@ -1,84 +1,23 @@
-
 buildscript {
+    ext.kotlin_version = "1.6.10"
     repositories {
         google()
         mavenCentral()
     }
-
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.0'
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
-
-apply plugin: 'com.android.library'
 
 allprojects {
     repositories {
         google()
+        maven { url "https://jitpack.io" }
         mavenCentral()
     }
 }
 
-android {
-    namespace 'org.example'
-    compileSdk 33
-
-    defaultConfig {
-        minSdk 27
-        targetSdk 33
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
-
-        }
-        profile {
-
-        }
-    }
-
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['src/main/libs/jniLibs']
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
-}
-
-dependencies {
-    implementation fileTree(dir: 'src/main/libs', include: ['*.jar'])
-}
-
-apply plugin: 'maven-publish'
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'org.example'
-            artifactId = 'connectedhomeip-controller-libs'
-            version = "1.0-SNAPSHOT"
-
-            pom {
-                description = 'Provides the native libraries for Android Matter Controllers as a Maven compatible repository that can be used in android apps via jitpack.io.'
-            }
-        }
-    }
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
