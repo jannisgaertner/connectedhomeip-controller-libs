@@ -54,8 +54,31 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'src/main/libs', include: ['*.jar'])
+}
+
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.example'
+            artifactId = 'connectedhomeip-controller-libs'
+            version = "1.0-SNAPSHOT"
+
+            pom {
+                description = 'Provides the native libraries for Android Matter Controllers as a Maven compatible repository that can be used in android apps via jitpack.io.'
+            }
+        }
+    }
 }
